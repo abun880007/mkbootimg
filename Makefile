@@ -24,7 +24,7 @@ else
     LDFLAGS += -Wl,--gc-sections -s
 endif
 
-all:mkbootimg$(EXE) unpackbootimg$(EXE)
+all:mkbootimg$(EXE) unpackbootimg$(EXE) dumpbootimg$(EXE)
 
 static:
 	$(MAKE) LDFLAGS="$(LDFLAGS) -static"
@@ -44,8 +44,14 @@ unpackbootimg$(EXE):unpackbootimg.o
 unpackbootimg.o:unpackbootimg.c
 	$(CROSS_COMPILE)$(CC) -o $@ $(CFLAGS) -c $< -Werror
 
+dumpbootimg$(EXE):dumpbootimg.o
+	$(CROSS_COMPILE)$(CC) -o $@ $^ $(LDFLAGS)
+
+dumpbootimg.o:dumpbootimg.c
+	$(CROSS_COMPILE)$(CC) -o $@ $(CFLAGS) -c $< -Werror
+
 clean:
-	$(RM) mkbootimg unpackbootimg
+	$(RM) mkbootimg unpackbootimg dumpbootimg
 	$(RM) *.a *.~ *.exe *.o
 	$(MAKE) -C libmincrypt clean
 
