@@ -24,7 +24,7 @@ const char *detect_hash_type(boot_img_hdr_v2 *hdr)
      * sha1 is expected to have zeroes in id[5], id[6] and id[7]
      * Zeroes anywhere else probably indicates neither.
      */
-    const uint32_t *id = hdr->id;
+    #define id (hdr->id)
     if (id[0] != 0 && id[1] != 0 && id[2] != 0 && id[3] != 0 &&
         id[4] != 0 && id[5] != 0 && id[6] != 0 && id[7] != 0) {
         return "sha256";
@@ -34,6 +34,7 @@ const char *detect_hash_type(boot_img_hdr_v2 *hdr)
     } else {
         return "unknown";
     }
+    #undef id
 }
 
 int usage()
